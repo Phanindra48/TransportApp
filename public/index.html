@@ -26,7 +26,7 @@
                 <li class="active">
                     <a href="#overview" data-toggle="tab">Overview</a>
                 </li>
-                <li><a href="#bookings" data-toggle="tab">Bookings</a>
+                <li><a href="#bookings" data-toggle="tab" onclick="getBookings()">Bookings</a>
                 </li>
                 <li><a href="#drivers" data-toggle="tab">Drivers</a>
                 </li>
@@ -35,34 +35,34 @@
             </ul>
             <div class="tab-content clearfix">
                 <div class="tab-pane active" id="overview">
-                    <h3>This will have all the booking and drivers</h3>
+                    <h3>This will have all the bookings and drivers</h3>
                 </div>
-                <div class="tab-pane" id="bookings">
+                <div class="tab-pane" id="bookings" ng-controller='bookingsController'>
                     <h3>Manage your bookings here</h3>
                     <div>
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" ng-submit='addBooking()'>
                             <div class="form-group">
                                 <label for="bookingName" class="control-label col-xs-2">Name</label>
                                 <div class="col-xs-3">
-                                    <input type="text" class="form-control" id="bookingName" placeholder="Name">
+                                    <input type="text" ng-model='name' class="form-control" id="bookingName" placeholder="Name">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="PhoneNumber" class="control-label col-xs-2">Phone</label>
+                                <label for="contactNumber" class="control-label col-xs-2">Phone</label>
                                 <div class="col-xs-3">
-                                    <input type="tel" class="form-control" id="PhoneNumber" placeholder="Please enter your mobile number here">
+                                    <input type="tel" ng-model='contact_number' class="form-control" id="contactNumber" placeholder="Please enter your contact number here">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="pickupLocation" class="control-label col-xs-2">Pick Up</label>
                                 <div class="col-xs-3">
-                                    <input type="text" class="form-control" id="pickUp" placeholder="Please enter pickup location here">
+                                    <input type="text" ng-model='pickupLocation' class="form-control" id="pickUp" placeholder="Please enter pickup location here">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="dropLocation" class="control-label col-xs-2">Drop</label>
                                 <div class="col-xs-3">
-                                    <input type="text" class="form-control" id="dropLocation" placeholder="Please enter drop location here">
+                                    <input type="text" ng-model='dropLocation' class="form-control" id="dropLocation" placeholder="Please enter drop location here">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -72,12 +72,54 @@
                             </div>
                         </form>
                     </div>
+                    <div class='bookingsDashboard'>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr class='row'>
+                                        <th class='col-xs-3'>
+                                            <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+										        Name 
+										        <span ng-show="{{sortType == 'name' && !sortReverse}}" class="fa fa-caret-down"></span>
+	            								<span ng-show="{{sortType == 'name' && sortReverse}}" class="fa fa-caret-up"></span>
+										    </a>
+                                        </th>
+                                        <th class='col-xs-3'>
+                                            Contact Number
+                                        </th>
+                                        <th class='col-xs-3'>
+                                            <a href="#" ng-click="sortType = 'pickup'; sortReverse = !sortReverse">
+										        Pick Up 
+										        <span ng-show="sortType == 'pickup' && !sortReverse" class="fa fa-caret-down"></span>
+	            								<span ng-show="sortType == 'pickup' && sortReverse" class="fa fa-caret-up"></span>
+										    </a>
+                                        </th>
+                                        <th class='col-xs-3'>
+                                            <a href="#" ng-click="sortType = 'drop'; sortReverse = !sortReverse">
+										        Drop 
+										        <span ng-show="sortType == 'drop' && !sortReverse" class="fa fa-caret-down"></span>
+	            								<span ng-show="sortType == 'drop' && sortReverse" class="fa fa-caret-up"></span>
+										    </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class='row' ng-repeat="booking in bookings | orderBy:sortType:sortReverse">
+                                        <td class='col-xs-4 ng-cloak'>{{ booking.name }}</td>
+                                        <td class='col-xs-4 ng-cloak'>{{ booking.contact_number }}</td>
+                                        <td class='col-xs-4 ng-cloak'>{{ booking.pickup }}</td>
+                                        <td class='col-xs-4 ng-cloak'>{{ booking.drop }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="drivers">
-                    <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
+                    <h3>Drivers dashboard</h3>
                 </div>
                 <div class="tab-pane" id="vehicles">
-                    <h3>We use css to change the background color of the content to be equal to the tab</h3>
+                    <h3>Add your vehicles here</h3>
                 </div>
             </div>
         </div>

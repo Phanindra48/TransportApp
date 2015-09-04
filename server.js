@@ -5,9 +5,9 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');  
 var methodOverride = require('method-override');
 var config  = require('./config');
-var Bookings = require('./model/bookings'); 
-var Drivers = require('./model/drivers');
-var Vehicles = require('./model/vehicles');
+var Booking = require('./model/bookings'); 
+var Driver = require('./model/drivers');
+var Vehicle = require('./model/vehicles');
 
 
 app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
@@ -19,12 +19,12 @@ app.use(methodOverride());
 
 
 
-/*
+
 mongoose.connect(config.database,function(error){
     if (error) console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?',error);
     else console.log('mongo connected to -> ',config.database);
 });
-*/
+
 
 // application -------------------------------------------------------------
 app.get('/', function(req, res) {
@@ -49,9 +49,10 @@ app.get('/api/bookings', function(req, res) {
 app.post('/api/bookings', function(req, res) {
     //console.log('server api got hit');
     var booking = new Booking({
-        word: req.body.word,
-        description: req.body.description,
-        audio_url : req.body.audio_url
+        name: req.body.name,
+        contact_number: req.body.contact_number,
+        pickup : req.body.pickup,
+        drop : req.body.drop
     });
     //console.log(booking);
     // create a booking, information comes from AJAX request from Angular

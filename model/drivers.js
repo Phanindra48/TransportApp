@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 var driverSchema = new mongoose.Schema({
-    Name: String,
-    PhoneNumber: String,
-    VehicleNumber : String
+    name: String,
+    contact_number: String,
+    vehicle_number : String
 });
 
 module.exports = mongoose.model('Driver',driverSchema);
