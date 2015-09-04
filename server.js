@@ -35,7 +35,7 @@ app.get('/', function(req, res) {
 app.get('/api/bookings', function(req, res) {
     //console.log('before find');
     // use mongoose to get all bookings in the database
-    Bookings.find(function(err, bookings) {
+    Booking.find(function(err, bookings) {
         //console.log('get bookings server side');
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
         if (err)
@@ -73,7 +73,7 @@ app.post('/api/bookings', function(req, res) {
 // delete a booking
 app.delete('/api/bookings/:booking_id', function(req, res) {
     Booking.remove({
-        _id : req.params.word_id
+        _id : req.params.booking_id
     }, function(err, records) {
         if (err)
             res.send(err);
@@ -87,6 +87,61 @@ app.delete('/api/bookings/:booking_id', function(req, res) {
     });
 });
 
+/* Driver api calls*/
+
+app.get('/api/drivers', function(req, res) {
+    //console.log('before find');
+    // use mongoose to get all drivers in the database
+    Driver.find(function(err, drivers) {
+        //console.log('get drivers server side');
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err)
+            res.send(err)
+
+        res.json(drivers); // return all drivers in JSON format
+    });
+});
+
+// create driver and send back all drivers after creation
+app.post('/api/drivers', function(req, res) {
+    //console.log('server api got hit');
+    var driver = new Driver({
+        name: req.body.name,
+        contact_number: req.body.contact_number,
+        vehicle_number : req.body.vehicle_number
+    });
+    //console.log(driver);
+    // create a driver, information comes from AJAX request from Angular
+    driver.save(function(err, records) {
+        if (err)
+            res.send(err);
+
+        // get and return all the drivers after you create another
+        Driver.find(function(err, drivers) {
+            if (err)
+                res.send(err)
+            res.json(drivers);
+        });
+    });
+
+});
+
+// delete a driver
+app.delete('/api/drivers/:driver_id', function(req, res) {
+    Driver.remove({
+        _id : req.params.driver_id
+    }, function(err, records) {
+        if (err)
+            res.send(err);
+
+        // get and return all the drivers after you create another
+        Driver.find(function(err, drivers) {
+            if (err)
+                res.send(err)
+            res.json(drivers);
+        });
+    });
+});
 // listen (start app with node server.js) ======================================
 app.listen(config.port);
 console.log("App listening on port " + config.port);
